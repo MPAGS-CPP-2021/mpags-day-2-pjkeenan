@@ -59,25 +59,42 @@ int main(int argc, char* argv[])
     std::string outputText;
 
     // Read in user input from stdin/file
-    // Warn that input file option not yet implemented
     if (!inputFile.empty()) {
-        std::cerr << "[warning] input from file ('" << inputFile
-                  << "') not implemented yet, using stdin\n";
+        // Open file and check can read
+        std::ifstream inFileStream {inputFile};
+        if (!inFileStream.good()){
+            std::cerr << "[error] failed to produce ifstream on input file <" << inputFile << ">" << std::endl;
+            return 1; 
+        }
+
+        // loop over each character from input file
+        while (inFileStream >> inputChar) {
+            outputText += transformChar (inputChar);
+        }
+    } // end if {have file with contents}
+
+    else { // No input file with contents -> input from cin
+        // loop over each character from user input
+        while (std::cin >> inputChar) {
+            outputText += transformChar (inputChar);
+        }
     }
 
-    // loop over each character from user input
-    while (std::cin >> inputChar) {
-        outputText += transformChar (inputChar);
-    }
-
-    // Print out the transliterated text
-    // Warn that output file option not yet implemented
+    // Output the transliterated text to stdout/file
     if (!outputFile.empty()) {
-        std::cerr << "[warning] output to file ('" << outputFile
-                  << "') not implemented yet, using stdout\n";
-    }
+        // Open file and check can write
+        std::ofstream outFileStream {outputFile};
+        if (!outFileStream.good()){
+            std::cerr << "[error] failed to produce ofstream on output file <" << outputFile << ">" << std::endl;
+            return 1; 
+        }
+        // Put transliterated text into output file
+        outFileStream << outputText << std::endl;
+    } // end if {have file with contents}
 
-    std::cout << outputText << std::endl;
+    else { // No output file -> output to cout
+        std::cout << outputText << std::endl;
+    }
 
     // No requirement to return from main, but we do so for clarity
     // and for consistency with other functions
