@@ -42,6 +42,10 @@ int main(int argc, char* argv[])
             << "                   Stdin will be used if not supplied\n\n"
             << "  -o FILE          Write processed text to FILE\n"
             << "                   Stdout will be used if not supplied\n\n"
+            << "  -e               Encrypt text with Ceasar cipher\n\n"
+            << "  -d               Decrypt text with Ceasar cipher\n\n"
+            << "  -k VALUE         Key for Ceasar cipher (en/de)cryption\n"
+            << "                   Should be value >= 0\n\n"
             << std::endl;
         // Help requires no further action, so return from main
         // with 0 used to indicate success
