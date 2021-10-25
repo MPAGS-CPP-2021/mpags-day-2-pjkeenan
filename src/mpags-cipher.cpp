@@ -7,7 +7,7 @@
 // Our project headers - use "" not <> as internal to project
 #include "TransformChar.hpp"
 #include "ProcessCommandLine.hpp"
-
+#include "RunCeasarCipher.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -18,11 +18,13 @@ int main(int argc, char* argv[])
     bool processStatus{false};
     bool helpRequested{false};
     bool versionRequested{false};
+    bool encrypt{true};
     std::string inputFile{""};
     std::string outputFile{""};
+    size_t key{0};
 
     // Parse command line args
-    processStatus = processCommandLine(cmdLineArgs, helpRequested, versionRequested, inputFile, outputFile);
+    processStatus = processCommandLine(cmdLineArgs, helpRequested, versionRequested, inputFile, outputFile, encrypt, key);
     if (!processStatus){
         return 1;
     }
@@ -79,6 +81,8 @@ int main(int argc, char* argv[])
             outputText += transformChar (inputChar);
         }
     }
+
+    outputText = runCeasarCipher(outputText, key, encrypt);
 
     // Output the transliterated text to stdout/file
     if (!outputFile.empty()) {
